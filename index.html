@@ -258,11 +258,179 @@
         .btn-glow:hover {
             box-shadow: 0 0 15px rgba(139, 92, 246, 0.7);
         }
+        
+        /* Mobile specific styles */
+        @media (max-width: 768px) {
+            .hero-content {
+                order: 2;
+                text-align: center;
+            }
+            
+            .hero-model {
+                order: 1;
+                margin-bottom: 2rem;
+            }
+            
+            .feature-card {
+                padding: 1.5rem;
+            }
+            
+            .download-section {
+                padding: 1.5rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+            }
+            
+            /* Mobile menu */
+            .mobile-menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(17, 17, 17, 0.98);
+                z-index: 1000;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                animation: fadeIn 0.3s ease-out;
+            }
+            
+            .mobile-menu.active {
+                display: flex;
+            }
+            
+            .mobile-menu a {
+                margin: 1rem 0;
+                font-size: 1.5rem;
+                opacity: 0;
+                transform: translateY(20px);
+                animation: slideUpFadeIn 0.4s ease-out forwards;
+            }
+            
+            @keyframes slideUpFadeIn {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            /* Mobile menu button */
+            .menu-btn {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 24px;
+                height: 18px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+            
+            .menu-btn span {
+                display: block;
+                width: 100%;
+                height: 2px;
+                background: white;
+                transition: all 0.3s ease;
+            }
+            
+            .menu-btn.active span:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-btn.active span:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+            
+            /* Adjust animations for mobile */
+            .slide-in-left, .slide-in-right {
+                animation: slideInBottom 0.8s ease-out forwards;
+            }
+            
+            /* Smaller text on mobile */
+            h1, h2, h3 {
+                font-size: 1.8rem;
+            }
+            
+            p {
+                font-size: 0.95rem;
+            }
+            
+            /* Adjust 3D model container */
+            #executor-model {
+                height: 250px;
+            }
+            
+            /* Better spacing for mobile */
+            section {
+                padding: 2rem 0;
+            }
+            
+            /* Mobile footer */
+            footer {
+                text-align: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Ripple effect for buttons */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* Parallax effect */
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- Header -->
-    <header class="py-4 px-6 border-b border-gray-800 slide-in-bottom">
+    <header class="py-4 px-6 border-b border-gray-800 slide-in-bottom sticky top-0 z-50 bg-[#111111] bg-opacity-90 backdrop-blur-sm">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center glow">
@@ -271,6 +439,7 @@
                 <h1 class="text-xl font-bold">MZ<span class="text-purple-400">XN</span></h1>
             </div>
             
+            <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-8">
                 <a href="#home" class="nav-link">Home</a>
                 <a href="#features" class="nav-link">Features</a>
@@ -280,11 +449,19 @@
             </nav>
             
             <div class="flex items-center space-x-4">
-                <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="discord-btn px-4 py-2 rounded-md flex items-center btn-glow">
-                    <i class="fab fa-discord mr-2"></i> Discord
+                <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="discord-btn px-4 py-2 rounded-md flex items-center btn-glow ripple hidden sm:flex">
+                    <i class="fab fa-discord mr-2"></i> <span class="hidden sm:inline">Discord</span>
                 </a>
                 
-                <div class="flex space-x-2">
+                <!-- Mobile Menu Button -->
+                <div class="menu-btn md:hidden">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <!-- Theme Switcher (hidden on mobile) -->
+                <div class="hidden md:flex space-x-2">
                     <div class="theme-btn bg-gray-800" data-theme="dark"></div>
                     <div class="theme-btn bg-gray-300" data-theme="light"></div>
                     <div class="theme-btn bg-gray-500" data-theme="gray"></div>
@@ -293,27 +470,48 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <a href="#home" class="nav-link text-2xl">Home</a>
+            <a href="#features" class="nav-link text-2xl">Features</a>
+            <a href="#download" class="nav-link text-2xl">Download</a>
+            <a href="#stats" class="nav-link text-2xl">Stats</a>
+            <a href="#faq" class="nav-link text-2xl">FAQ</a>
+            
+            <div class="flex space-x-2 mt-8">
+                <div class="theme-btn bg-gray-800" data-theme="dark"></div>
+                <div class="theme-btn bg-gray-300" data-theme="light"></div>
+                <div class="theme-btn bg-gray-500" data-theme="gray"></div>
+                <div class="theme-btn bg-purple-800" data-theme="purple"></div>
+                <div class="theme-btn bg-black" data-theme="black"></div>
+            </div>
+            
+            <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="discord-btn px-6 py-3 rounded-md font-medium flex items-center justify-center btn-glow mt-8">
+                <i class="fab fa-discord mr-2"></i> Join Discord
+            </a>
+        </div>
     </header>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
         <!-- Hero Section -->
-        <section id="home" class="mb-16">
+        <section id="home" class="mb-16 pt-8">
             <div class="flex flex-col lg:flex-row items-center justify-between">
-                <div class="lg:w-1/2 mb-8 lg:mb-0 slide-in-left delay-1">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Advanced <span class="text-purple-400 glow">Roblox</span> Executor</h2>
+                <div class="lg:w-1/2 mb-8 lg:mb-0 slide-in-left delay-1 hero-content">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Advanced <span class="text-purple-400 glow gradient-text">Roblox</span> Executor</h2>
                     <p class="text-lg text-gray-400 mb-6">MZXN v4 is the most powerful and reliable Roblox exploit with unmatched execution capabilities and advanced features for professional scripters.</p>
                     
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="download-btn px-6 py-3 rounded-md font-medium flex items-center justify-center btn-glow">
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start">
+                        <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="download-btn px-6 py-3 rounded-md font-medium flex items-center justify-center btn-glow ripple">
                             <i class="fas fa-download mr-2"></i> Download v4.0.0
                         </a>
-                        <button class="border border-purple-400 text-purple-400 px-6 py-3 rounded-md font-medium hover:bg-purple-400 hover:text-white transition btn-glow">
+                        <button class="border border-purple-400 text-purple-400 px-6 py-3 rounded-md font-medium hover:bg-purple-400 hover:text-white transition btn-glow ripple">
                             <i class="fas fa-book mr-2"></i> Documentation
                         </button>
                     </div>
                     
-                    <div class="mt-8 flex items-center space-x-4">
+                    <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
                         <div class="flex items-center">
                             <i class="fas fa-check-circle text-green-400 mr-2 pulse"></i>
                             <span>Undetected</span>
@@ -329,7 +527,7 @@
                     </div>
                 </div>
                 
-                <div class="lg:w-1/2 slide-in-right delay-1">
+                <div class="lg:w-1/2 slide-in-right delay-1 hero-model">
                     <div id="executor-model" class="relative float">
                         <!-- 3D Model will be rendered here -->
                         <div class="absolute inset-0 flex items-center justify-center">
@@ -345,11 +543,11 @@
 
         <!-- Features Section -->
         <section id="features" class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">Powerful <span class="text-purple-400 glow">Features</span></h2>
+            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">Powerful <span class="text-purple-400 glow gradient-text">Features</span></h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Feature 1 -->
-                <div class="feature-card p-6 rounded-lg slide-in-left delay-1 hover:transform hover:scale-105 transition">
+                <div class="feature-card p-6 rounded-lg slide-in-left delay-1 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
                         <i class="fas fa-bolt text-purple-400 text-xl"></i>
                     </div>
@@ -358,7 +556,7 @@
                 </div>
                 
                 <!-- Feature 2 -->
-                <div class="feature-card p-6 rounded-lg slide-in-bottom delay-2 hover:transform hover:scale-105 transition">
+                <div class="feature-card p-6 rounded-lg slide-in-bottom delay-2 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
                         <i class="fas fa-shield-alt text-purple-400 text-xl"></i>
                     </div>
@@ -367,7 +565,7 @@
                 </div>
                 
                 <!-- Feature 3 -->
-                <div class="feature-card p-6 rounded-lg slide-in-right delay-1 hover:transform hover:scale-105 transition">
+                <div class="feature-card p-6 rounded-lg slide-in-right delay-1 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
                         <i class="fas fa-code text-purple-400 text-xl"></i>
                     </div>
@@ -376,7 +574,7 @@
                 </div>
                 
                 <!-- Feature 4 -->
-                <div class="feature-card p-6 rounded-lg slide-in-left delay-2 hover:transform hover:scale-105 transition">
+                <div class="feature-card p-6 rounded-lg slide-in-left delay-2 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
                         <i class="fas fa-rocket text-purple-400 text-xl"></i>
                     </div>
@@ -385,7 +583,7 @@
                 </div>
                 
                 <!-- Feature 5 -->
-                <div class="feature-card p-6 rounded-lg slide-in-bottom delay-3 hover:transform hover:scale-105 transition">
+                <div class="feature-card p-6 rounded-lg slide-in-bottom delay-3 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
                         <i class="fas fa-database text-purple-400 text-xl"></i>
                     </div>
@@ -394,7 +592,7 @@
                 </div>
                 
                 <!-- Feature 6 -->
-                <div class="feature-card p-6 rounded-lg slide-in-right delay-2 hover:transform hover:scale-105 transition">
+                <div class="feature-card p-6 rounded-lg slide-in-right delay-2 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
                         <i class="fas fa-wifi text-purple-400 text-xl"></i>
                     </div>
@@ -406,18 +604,18 @@
 
         <!-- Download Section -->
         <section id="download" class="mb-16">
-            <div class="executor-card rounded-xl p-8 slide-in-bottom delay-2">
-                <h2 class="text-3xl font-bold mb-6 text-center">Download <span class="text-purple-400 glow">MZXN</span></h2>
+            <div class="executor-card rounded-xl p-6 md:p-8 slide-in-bottom delay-2">
+                <h2 class="text-3xl font-bold mb-6 text-center">Download <span class="text-purple-400 glow gradient-text">MZXN</span></h2>
                 
                 <div class="max-w-2xl mx-auto">
                     <!-- Windows Download -->
-                    <div class="p-6 rounded-lg border border-gray-700 hover:border-purple-400 transition slide-in-left delay-3 hover:transform hover:scale-102">
+                    <div class="p-6 rounded-lg border border-gray-700 hover:border-purple-400 transition slide-in-left delay-3 hover:transform hover:scale-102 hover:shadow-purple-500/10">
                         <div class="flex items-center mb-4">
                             <i class="fab fa-windows text-purple-400 text-2xl mr-3"></i>
                             <h3 class="text-xl font-semibold">Windows</h3>
                         </div>
                         <p class="text-gray-400 mb-4">Compatible with Windows 10/11 (64-bit only)</p>
-                        <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="download-btn px-4 py-2 rounded-md w-full btn-glow flex items-center justify-center">
+                        <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="download-btn px-4 py-2 rounded-md w-full btn-glow flex items-center justify-center ripple">
                             <i class="fas fa-download mr-2"></i> Download (v4.0.0)
                         </a>
                         <div class="mt-3 text-sm text-gray-500">
@@ -449,20 +647,20 @@
 
         <!-- Stats Section -->
         <section id="stats" class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">MZXN <span class="text-purple-400 glow">Statistics</span></h2>
+            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">MZXN <span class="text-purple-400 glow gradient-text">Statistics</span></h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="stat-card p-6 rounded-lg text-center slide-in-left delay-1 hover:transform hover:scale-105 transition">
+                <div class="stat-card p-6 rounded-lg text-center slide-in-left delay-1 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="text-5xl font-bold text-purple-400 mb-2">10,000+</div>
                     <div class="text-gray-400">Downloads</div>
                 </div>
                 
-                <div class="stat-card p-6 rounded-lg text-center slide-in-bottom delay-2 hover:transform hover:scale-105 transition">
+                <div class="stat-card p-6 rounded-lg text-center slide-in-bottom delay-2 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="text-5xl font-bold text-green-400 mb-2">99.9%</div>
                     <div class="text-gray-400">Uptime</div>
                 </div>
                 
-                <div class="stat-card p-6 rounded-lg text-center slide-in-right delay-1 hover:transform hover:scale-105 transition">
+                <div class="stat-card p-6 rounded-lg text-center slide-in-right delay-1 hover:transform hover:scale-105 transition hover:shadow-lg hover:shadow-purple-500/10">
                     <div class="text-5xl font-bold text-purple-400 mb-2">2025</div>
                     <div class="text-gray-400">Release Year</div>
                 </div>
@@ -513,48 +711,58 @@
 
         <!-- FAQ Section -->
         <section id="faq" class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">Frequently <span class="text-purple-400 glow">Asked Questions</span></h2>
+            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">Frequently <span class="text-purple-400 glow gradient-text">Asked Questions</span></h2>
             
-            <div class="executor-card rounded-xl p-8 slide-in-bottom delay-1">
+            <div class="executor-card rounded-xl p-6 md:p-8 slide-in-bottom delay-1">
                 <div class="space-y-4">
                     <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
+                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer faq-question">
                             <span>Is MZXN safe to use?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
                         </h3>
-                        <p class="text-gray-400 mt-2 hidden">MZXN employs advanced anti-detection techniques and is regularly updated to ensure safety. However, using any exploit carries inherent risks. We recommend using an alternate account and not exploiting in games where you have valuable items.</p>
+                        <div class="faq-answer text-gray-400 mt-2 hidden">
+                            <p>MZXN employs advanced anti-detection techniques and is regularly updated to ensure safety. However, using any exploit carries inherent risks. We recommend using an alternate account and not exploiting in games where you have valuable items.</p>
+                        </div>
                     </div>
                     
                     <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
+                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer faq-question">
                             <span>Will MZXN get me banned?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
                         </h3>
-                        <p class="text-gray-400 mt-2 hidden">While MZXN has sophisticated anti-ban systems, no exploit can guarantee 100% safety from bans. The risk depends on how you use it and in which games. Avoid obvious cheating in competitive games to minimize risk.</p>
+                        <div class="faq-answer text-gray-400 mt-2 hidden">
+                            <p>While MZXN has sophisticated anti-ban systems, no exploit can guarantee 100% safety from bans. The risk depends on how you use it and in which games. Avoid obvious cheating in competitive games to minimize risk.</p>
+                        </div>
                     </div>
                     
                     <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
+                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer faq-question">
                             <span>What makes MZXN better than other executors?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
                         </h3>
-                        <p class="text-gray-400 mt-2 hidden">MZXN offers superior execution speed, more stable API hooks, better memory management, and regular updates. Our custom Lua engine provides better compatibility with complex scripts compared to standard executors.</p>
+                        <div class="faq-answer text-gray-400 mt-2 hidden">
+                            <p>MZXN offers superior execution speed, more stable API hooks, better memory management, and regular updates. Our custom Lua engine provides better compatibility with complex scripts compared to standard executors.</p>
+                        </div>
                     </div>
                     
                     <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
+                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer faq-question">
                             <span>How often is MZXN updated?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
                         </h3>
-                        <p class="text-gray-400 mt-2 hidden">We release updates every 2-4 weeks on average, with emergency patches for critical issues within 24-48 hours. Major updates with new features come every 2-3 months.</p>
+                        <div class="faq-answer text-gray-400 mt-2 hidden">
+                            <p>We release updates every 2-4 weeks on average, with emergency patches for critical issues within 24-48 hours. Major updates with new features come every 2-3 months.</p>
+                        </div>
                     </div>
                     
                     <div class="pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
+                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer faq-question">
                             <span>Can I request features for MZXN?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
                         </h3>
-                        <p class="text-gray-400 mt-2 hidden">Yes! Join our Discord server to suggest features. Popular requests are prioritized for future updates. We've implemented over 30 community-suggested features so far.</p>
+                        <div class="faq-answer text-gray-400 mt-2 hidden">
+                            <p>Yes! Join our Discord server to suggest features. Popular requests are prioritized for future updates. We've implemented over 30 community-suggested features so far.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -566,16 +774,16 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-2 justify-center md:justify-start">
                         <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center glow">
                             <i class="fas fa-bolt text-white"></i>
                         </div>
                         <h1 class="text-xl font-bold">MZ<span class="text-purple-400">XN</span></h1>
                     </div>
-                    <p class="text-gray-400 mt-2">The most advanced Roblox executor</p>
+                    <p class="text-gray-400 mt-2 text-center md:text-left">The most advanced Roblox executor</p>
                 </div>
                 
-                <div class="flex space-x-6">
+                <div class="flex space-x-6 mb-4 md:mb-0">
                     <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="text-gray-400 hover:text-purple-400 transition">
                         <i class="fab fa-discord text-xl"></i>
                     </a>
@@ -591,8 +799,8 @@
                 </div>
             </div>
             
-            <div class="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between">
-                <div class="mb-4 md:mb-0">
+            <div class="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0 text-center md:text-left">
                     <p class="text-gray-400">© 2025 MZXN. All rights reserved.</p>
                     <p class="text-gray-500 text-sm mt-1">Not affiliated with Roblox Corporation.</p>
                 </div>
