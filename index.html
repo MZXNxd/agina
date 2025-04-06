@@ -3,831 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MZXN | Advanced Roblox Executor</title>
+    <title>MZXN V4 | Advanced Roblox Executor</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
     <style>
         :root {
-            --bg-dark: #111111;
-            --bg-light: #f8f9fa;
-            --bg-gray: #2d2d2d;
-            --bg-purple: #4a1d96;
-            --text-primary: #e0e0e0;
-            --text-secondary: #b0b0b0;
-            --accent: #8b5cf6;
-        }
-        
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: all 0.3s ease;
-            overflow-x: hidden;
-        }
-        
-        body.light-mode {
-            background-color: var(--bg-light);
-            color: #333;
-            --text-primary: #333;
-            --text-secondary: #555;
-        }
-        
-        body.gray-mode {
-            background-color: var(--bg-gray);
-        }
-        
-        body.purple-mode {
-            background-color: var(--bg-purple);
-        }
-        
-        body.black-mode {
-            background-color: #000;
-        }
-        
-        .theme-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.2);
-            transition: transform 0.2s;
-        }
-        
-        .theme-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .executor-card {
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        body.light-mode .executor-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0,0,0,0.1);
-        }
-        
-        .feature-card {
-            background: rgba(30, 30, 30, 0.6);
-            transition: all 0.3s ease;
-        }
-        
-        body.light-mode .feature-card {
-            background: rgba(255, 255, 255, 0.7);
-        }
-        
-        .download-btn {
-            background: linear-gradient(135deg, var(--accent), #7e22ce);
-            transition: all 0.3s ease;
-        }
-        
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
-        }
-        
-        .discord-btn {
-            background: #5865F2;
-            transition: all 0.3s ease;
-        }
-        
-        .discord-btn:hover {
-            background: #4752c4;
-        }
-        
-        #executor-model {
-            width: 100%;
-            height: 300px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .nav-link {
-            position: relative;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .stat-card {
-            background: rgba(40, 40, 40, 0.6);
-            transition: all 0.3s ease;
-        }
-        
-        body.light-mode .stat-card {
-            background: rgba(240, 240, 240, 0.8);
-        }
-        
-        .tooltip {
-            position: relative;
-        }
-        
-        .tooltip-text {
-            visibility: hidden;
-            width: 120px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
+            --bg-color: #0b0b0b;
+            --primary: #7e22ce;
+            --primary-hover: #9333ea;
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --card-bg: #111111;
         }
 
-        /* Animation classes */
-        .slide-in-left {
-            animation: slideInLeft 0.8s ease-out forwards;
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            transition: all 0.5s ease;
         }
-        
-        .slide-in-right {
-            animation: slideInRight 0.8s ease-out forwards;
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8b5cf6, #d946ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        
-        .slide-in-bottom {
-            animation: slideInBottom 0.8s ease-out forwards;
+
+        .glow {
+            box-shadow: 0 0 15px rgba(126, 34, 206, 0.7);
         }
-        
-        .float {
-            animation: float 3s ease-in-out infinite;
+
+        .glow-text {
+            text-shadow: 0 0 8px rgba(126, 34, 206, 0.7);
         }
-        
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(126, 34, 206, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(126, 34, 206, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(126, 34, 206, 0.4);
+        }
+
         .pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: pulse 2s infinite;
         }
-        
-        .spin {
-            animation: spin 1s linear infinite;
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(126, 34, 206, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(126, 34, 206, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(126, 34, 206, 0);
+            }
         }
-        
-        @keyframes slideInLeft {
-            from { transform: translateX(-100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
         }
-        
-        @keyframes slideInRight {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes slideInBottom {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @keyframes float {
+
+        @keyframes floating {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+
+        .terminal {
+            background-color: #000;
+            border: 1px solid var(--primary);
+            font-family: 'Courier New', monospace;
+            position: relative;
         }
 
-        .delay-1 {
-            animation-delay: 0.2s;
+        .terminal::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
+            background: linear-gradient(90deg, var(--primary), #000);
+            opacity: 0.3;
         }
-        
-        .delay-2 {
-            animation-delay: 0.4s;
+
+        .typing {
+            border-right: 2px solid var(--primary);
+            animation: blink 0.75s step-end infinite;
         }
-        
-        .delay-3 {
-            animation-delay: 0.6s;
+
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
         }
-        
-        .delay-4 {
-            animation-delay: 0.8s;
+
+        .nav-link {
+            position: relative;
         }
-        
-        .delay-5 {
-            animation-delay: 1s;
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
         }
-        
-        .glow {
-            text-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
+
+        .nav-link:hover::after {
+            width: 100%;
         }
-        
-        .btn-glow:hover {
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.7);
+
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(10deg) scale(1.1);
+            color: var(--primary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 2.5rem;
+            }
+            
+            .terminal {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Header -->
-    <header class="py-4 px-6 border-b border-gray-800 slide-in-bottom">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center glow">
-                    <i class="fas fa-bolt text-white"></i>
+    <!-- Navigation -->
+    <nav class="bg-black bg-opacity-70 backdrop-filter backdrop-blur-lg border-b border-gray-800 fixed w-full z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl font-bold gradient-text">MZXN <span class="text-xs bg-purple-900 text-white px-2 py-1 rounded ml-1">V4</span></span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-8">
+                            <a href="#" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                            <a href="#features" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                            <a href="#about" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                            <a href="#faq" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="text-xl font-bold">MZ<span class="text-purple-400">XN</span></h1>
-            </div>
-            
-            <nav class="hidden md:flex space-x-8">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#download" class="nav-link">Download</a>
-                <a href="#stats" class="nav-link">Stats</a>
-                <a href="#faq" class="nav-link">FAQ</a>
-            </nav>
-            
-            <div class="flex items-center space-x-4">
-                <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="discord-btn px-4 py-2 rounded-md flex items-center btn-glow">
-                    <i class="fab fa-discord mr-2"></i> Discord
-                </a>
-                
-                <div class="flex space-x-2">
-                    <div class="theme-btn bg-gray-800" data-theme="dark"></div>
-                    <div class="theme-btn bg-gray-300" data-theme="light"></div>
-                    <div class="theme-btn bg-gray-500" data-theme="gray"></div>
-                    <div class="theme-btn bg-purple-800" data-theme="purple"></div>
-                    <div class="theme-btn bg-black" data-theme="black"></div>
+                <div class="flex space-x-4">
+                    <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium flex items-center">
+                        <i class="fab fa-discord mr-2"></i> Discord
+                    </a>
+                    <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium flex items-center pulse">
+                        <i class="fas fa-download mr-2"></i> Download
+                    </a>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <!-- Hero Section -->
-        <section id="home" class="mb-16">
-            <div class="flex flex-col lg:flex-row items-center justify-between">
-                <div class="lg:w-1/2 mb-8 lg:mb-0 slide-in-left delay-1">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Advanced <span class="text-purple-400 glow">Roblox</span> Executor</h2>
-                    <p class="text-lg text-gray-400 mb-6">MZXN v4 is the most powerful and reliable Roblox exploit with unmatched execution capabilities and advanced features for professional scripters.</p>
-                    
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="download-btn px-6 py-3 rounded-md font-medium flex items-center justify-center btn-glow">
-                            <i class="fas fa-download mr-2"></i> Download v4.0.0
-                        </a>
-                        <button class="border border-purple-400 text-purple-400 px-6 py-3 rounded-md font-medium hover:bg-purple-400 hover:text-white transition btn-glow">
-                            <i class="fas fa-book mr-2"></i> Documentation
-                        </button>
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="hero-text text-5xl font-extrabold leading-tight mb-6">
+                    The Most Advanced <span class="gradient-text">Roblox Executor</span>
+                </h1>
+                <p class="text-xl text-gray-300 mb-8">
+                    Experience unparalleled performance with MZXN V4. Our executor delivers unmatched speed, stability, and features for your Roblox exploits.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="btn-primary text-white px-8 py-3 rounded-lg text-lg font-semibold flex items-center justify-center pulse">
+                        <i class="fas fa-download mr-3"></i> Download Now
+                    </a>
+                    <a href="#features" class="bg-gray-800 hover:bg-gray-700 text-white px-8 py-3 rounded-lg text-lg font-semibold flex items-center justify-center transition-all">
+                        <i class="fas fa-star mr-3"></i> Explore Features
+                    </a>
+                </div>
+                <div class="mt-8 flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-purple-500 mr-2"></i>
+                        <span class="text-sm text-gray-300">Undetected</span>
                     </div>
-                    
-                    <div class="mt-8 flex items-center space-x-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-check-circle text-green-400 mr-2 pulse"></i>
-                            <span>Undetected</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-bolt text-yellow-400 mr-2 pulse"></i>
-                            <span>Fast Execution</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-shield-alt text-purple-400 mr-2 pulse"></i>
-                            <span>Secure</span>
-                        </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-bolt text-purple-500 mr-2"></i>
+                        <span class="text-sm text-gray-300">Lightning Fast</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-code text-purple-500 mr-2"></i>
+                        <span class="text-sm text-gray-300">Lua 5.1</span>
                     </div>
                 </div>
-                
-                <div class="lg:w-1/2 slide-in-right delay-1">
-                    <div id="executor-model" class="relative float">
-                        <!-- 3D Model will be rendered here -->
+            </div>
+            <div class="md:w-1/2 relative">
+                <div class="terminal rounded-lg p-4 h-64 overflow-hidden relative glow">
+                    <div class="text-green-400 mb-4">MZXN V4 > Initializing...</div>
+                    <div class="text-purple-400 mb-2">> Loading dependencies...</div>
+                    <div class="text-yellow-400 mb-2">> Checking environment...</div>
+                    <div class="text-green-400 mb-2">> Injecting into Roblox...</div>
+                    <div class="text-blue-400 mb-2">> Establishing secure connection...</div>
+                    <div class="text-white mt-4">Welcome to <span class="text-purple-400">MZXN V4</span> Executor</div>
+                    <div class="text-gray-400">Type 'help' for commands list</div>
+                    <div class="absolute bottom-4 left-4 flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <div class="absolute bottom-4 right-4 text-gray-500 text-sm">v4.0.0</div>
+                </div>
+                <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-purple-900 opacity-20 blur-xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-purple-900 opacity-20 blur-xl"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Powerful <span class="gradient-text">Features</span></h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                MZXN V4 comes packed with advanced features that give you complete control over your Roblox experience.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="card rounded-xl p-6 feature-card">
+                <div class="w-14 h-14 rounded-lg bg-purple-900 bg-opacity-30 flex items-center justify-center mb-4">
+                    <i class="fas fa-bolt feature-icon text-2xl text-purple-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Lightning Fast Execution</h3>
+                <p class="text-gray-300">
+                    Our optimized engine executes scripts faster than ever before, with near-instant injection times.
+                </p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="card rounded-xl p-6 feature-card">
+                <div class="w-14 h-14 rounded-lg bg-purple-900 bg-opacity-30 flex items-center justify-center mb-4">
+                    <i class="fas fa-shield-alt feature-icon text-2xl text-purple-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Advanced Protection</h3>
+                <p class="text-gray-300">
+                    State-of-the-art anti-detection keeps you safe from bans with constant updates to bypass the latest patches.
+                </p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="card rounded-xl p-6 feature-card">
+                <div class="w-14 h-14 rounded-lg bg-purple-900 bg-opacity-30 flex items-center justify-center mb-4">
+                    <i class="fas fa-code feature-icon text-2xl text-purple-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Full Lua 5.1 Support</h3>
+                <p class="text-gray-300">
+                    Complete implementation of Lua 5.1 with additional Roblox-specific functions and libraries.
+                </p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="card rounded-xl p-6 feature-card">
+                <div class="w-14 h-14 rounded-lg bg-purple-900 bg-opacity-30 flex items-center justify-center mb-4">
+                    <i class="fas fa-palette feature-icon text-2xl text-purple-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Custom UI Themes</h3>
+                <p class="text-gray-300">
+                    Personalize your experience with multiple UI themes and color schemes to match your style.
+                </p>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="card rounded-xl p-6 feature-card">
+                <div class="w-14 h-14 rounded-lg bg-purple-900 bg-opacity-30 flex items-center justify-center mb-4">
+                    <i class="fas fa-plug feature-icon text-2xl text-purple-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Script Hub Integration</h3>
+                <p class="text-gray-300">
+                    Built-in script hub with auto-updating popular scripts and direct execution capabilities.
+                </p>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="card rounded-xl p-6 feature-card">
+                <div class="w-14 h-14 rounded-lg bg-purple-900 bg-opacity-30 flex items-center justify-center mb-4">
+                    <i class="fas fa-cogs feature-icon text-2xl text-purple-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Advanced Debugging</h3>
+                <p class="text-gray-300">
+                    Powerful debugging tools including stack traces, variable inspection, and real-time error reporting.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-gray-900 bg-opacity-50 rounded-3xl my-10">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <div class="relative">
+                    <div class="w-full h-80 bg-gray-800 rounded-xl overflow-hidden relative">
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center">
-                                <i class="fas fa-bolt text-4xl text-purple-500 mb-2 spin"></i>
-                                <p class="text-gray-400">Executor 3D Model</p>
+                            <div class="text-center p-6">
+                                <i class="fas fa-lock text-6xl text-purple-500 mb-4 floating"></i>
+                                <h3 class="text-2xl font-bold mb-2">Secure & Private</h3>
+                                <p class="text-gray-300">Your security is our top priority</p>
                             </div>
                         </div>
                     </div>
+                    <div class="absolute -top-6 -left-6 w-32 h-32 rounded-full bg-purple-900 opacity-20 blur-xl"></div>
                 </div>
             </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">Powerful <span class="text-purple-400 glow">Features</span></h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Feature 1 -->
-                <div class="feature-card p-6 rounded-lg slide-in-left delay-1 hover:transform hover:scale-105 transition">
-                    <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-bolt text-purple-400 text-xl"></i>
+            <div class="md:w-1/2 md:pl-12">
+                <h2 class="text-3xl font-bold mb-6">About <span class="gradient-text">MZXN V4</span></h2>
+                <p class="text-gray-300 mb-6">
+                    MZXN V4 represents the pinnacle of Roblox execution technology. Developed by a team of experienced reverse engineers and Lua experts, we've created the most advanced executor available today.
+                </p>
+                <p class="text-gray-300 mb-6">
+                    Our V4 release introduces groundbreaking performance improvements, enhanced security measures, and a completely redesigned user experience that sets a new standard for Roblox exploit software.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center bg-gray-800 px-4 py-2 rounded-lg">
+                        <i class="fas fa-check-circle text-purple-500 mr-2"></i>
+                        <span>100% Undetected</span>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Lightning Fast</h3>
-                    <p class="text-gray-400">Optimized execution engine delivers instant script injection with minimal overhead.</p>
-                </div>
-                
-                <!-- Feature 2 -->
-                <div class="feature-card p-6 rounded-lg slide-in-bottom delay-2 hover:transform hover:scale-105 transition">
-                    <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-shield-alt text-purple-400 text-xl"></i>
+                    <div class="flex items-center bg-gray-800 px-4 py-2 rounded-lg">
+                        <i class="fas fa-check-circle text-purple-500 mr-2"></i>
+                        <span>Regular Updates</span>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Advanced Protection</h3>
-                    <p class="text-gray-400">Built-in anti-detection and anti-ban systems keep you safe while exploiting.</p>
-                </div>
-                
-                <!-- Feature 3 -->
-                <div class="feature-card p-6 rounded-lg slide-in-right delay-1 hover:transform hover:scale-105 transition">
-                    <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-code text-purple-400 text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Lua 5.1 Support</h3>
-                    <p class="text-gray-400">Full Lua 5.1 implementation with extensions for Roblox-specific functionality.</p>
-                </div>
-                
-                <!-- Feature 4 -->
-                <div class="feature-card p-6 rounded-lg slide-in-left delay-2 hover:transform hover:scale-105 transition">
-                    <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-rocket text-purple-400 text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Multi-Threading</h3>
-                    <p class="text-gray-400">Execute multiple scripts simultaneously with our advanced multi-threading system.</p>
-                </div>
-                
-                <!-- Feature 5 -->
-                <div class="feature-card p-6 rounded-lg slide-in-bottom delay-3 hover:transform hover:scale-105 transition">
-                    <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-database text-purple-400 text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Script Hub</h3>
-                    <p class="text-gray-400">Built-in script hub with hundreds of pre-made scripts for popular games.</p>
-                </div>
-                
-                <!-- Feature 6 -->
-                <div class="feature-card p-6 rounded-lg slide-in-right delay-2 hover:transform hover:scale-105 transition">
-                    <div class="w-12 h-12 bg-purple-900 bg-opacity-30 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-wifi text-purple-400 text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Auto Updates</h3>
-                    <p class="text-gray-400">Automatic updates ensure you always have the latest features and protections.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Download Section -->
-        <section id="download" class="mb-16">
-            <div class="executor-card rounded-xl p-8 slide-in-bottom delay-2">
-                <h2 class="text-3xl font-bold mb-6 text-center">Download <span class="text-purple-400 glow">MZXN</span></h2>
-                
-                <div class="max-w-2xl mx-auto">
-                    <!-- Windows Download -->
-                    <div class="p-6 rounded-lg border border-gray-700 hover:border-purple-400 transition slide-in-left delay-3 hover:transform hover:scale-102">
-                        <div class="flex items-center mb-4">
-                            <i class="fab fa-windows text-purple-400 text-2xl mr-3"></i>
-                            <h3 class="text-xl font-semibold">Windows</h3>
-                        </div>
-                        <p class="text-gray-400 mb-4">Compatible with Windows 10/11 (64-bit only)</p>
-                        <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="download-btn px-4 py-2 rounded-md w-full btn-glow flex items-center justify-center">
-                            <i class="fas fa-download mr-2"></i> Download (v4.0.0)
-                        </a>
-                        <div class="mt-3 text-sm text-gray-500">
-                            <i class="fas fa-file-archive mr-1"></i> 69 MB .rar
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-8">
-                    <h3 class="text-xl font-semibold mb-4 slide-in-bottom delay-3">Installation Instructions</h3>
-                    <div class="bg-gray-900 rounded-lg p-4 slide-in-bottom delay-4">
-                        <div class="flex border-b border-gray-700 mb-4">
-                            <button class="tab-button px-4 py-2 font-medium active" data-tab="windows">Windows</button>
-                        </div>
-                        
-                        <div id="windows" class="tab-content active">
-                            <ol class="list-decimal pl-5 space-y-2">
-                                <li>Download the Windows .rar file</li>
-                                <li>Extract the contents using WinRAR or 7-Zip</li>
-                                <li>Run MZXN.exe (may require admin privileges)</li>
-                                <li>Allow through Windows Defender if prompted</li>
-                                <li>Launch Roblox and inject using the UI</li>
-                            </ol>
-                        </div>
+                    <div class="flex items-center bg-gray-800 px-4 py-2 rounded-lg">
+                        <i class="fas fa-check-circle text-purple-500 mr-2"></i>
+                        <span>24/7 Support</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Stats Section -->
-        <section id="stats" class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">MZXN <span class="text-purple-400 glow">Statistics</span></h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="stat-card p-6 rounded-lg text-center slide-in-left delay-1 hover:transform hover:scale-105 transition">
-                    <div class="text-5xl font-bold text-purple-400 mb-2">10,000+</div>
-                    <div class="text-gray-400">Downloads</div>
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Frequently Asked <span class="gradient-text">Questions</span></h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                Find answers to common questions about MZXN V4.
+            </p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto">
+            <!-- FAQ Item 1 -->
+            <div class="card rounded-xl p-6 mb-4">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(1)">
+                    <h3 class="text-lg font-semibold">Is MZXN V4 safe to use?</h3>
+                    <i class="fas fa-chevron-down transition-transform duration-300" id="faq-icon-1"></i>
                 </div>
-                
-                <div class="stat-card p-6 rounded-lg text-center slide-in-bottom delay-2 hover:transform hover:scale-105 transition">
-                    <div class="text-5xl font-bold text-green-400 mb-2">99.9%</div>
-                    <div class="text-gray-400">Uptime</div>
-                </div>
-                
-                <div class="stat-card p-6 rounded-lg text-center slide-in-right delay-1 hover:transform hover:scale-105 transition">
-                    <div class="text-5xl font-bold text-purple-400 mb-2">2025</div>
-                    <div class="text-gray-400">Release Year</div>
-                </div>
+                <p class="text-gray-300 mt-3 hidden" id="faq-content-1">
+                    Yes, MZXN V4 employs advanced anti-detection techniques and is regularly updated to ensure safety. However, as with any executor, there's always some risk when exploiting in Roblox.
+                </p>
             </div>
             
-            <div class="mt-8 executor-card p-6 rounded-lg slide-in-bottom delay-3">
-                <h3 class="text-xl font-semibold mb-4">Version History</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="border-b border-gray-700">
-                                <th class="text-left py-2">Version</th>
-                                <th class="text-left py-2">Release Date</th>
-                                <th class="text-left py-2">Changes</th>
-                                <th class="text-left py-2">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b border-gray-700">
-                                <td class="py-3">v4.0.0</td>
-                                <td>2025-03-20</td>
-                                <td>Complete rewrite, new UI, improved performance</td>
-                                <td><span class="bg-green-900 bg-opacity-30 text-green-400 px-2 py-1 rounded text-sm">Stable</span></td>
-                            </tr>
-                            <tr class="border-b border-gray-700">
-                                <td class="py-3">v3.2.1</td>
-                                <td>2025-02-15</td>
-                                <td>Bug fixes, stability improvements</td>
-                                <td><span class="bg-gray-900 text-gray-400 px-2 py-1 rounded text-sm">Archived</span></td>
-                            </tr>
-                            <tr class="border-b border-gray-700">
-                                <td class="py-3">v3.1.0</td>
-                                <td>2025-01-30</td>
-                                <td>Added script hub, performance improvements</td>
-                                <td><span class="bg-gray-900 text-gray-400 px-2 py-1 rounded text-sm">Archived</span></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3">v3.0.0</td>
-                                <td>2025-01-10</td>
-                                <td>Initial v3 release</td>
-                                <td><span class="bg-gray-900 text-gray-400 px-2 py-1 rounded text-sm">Archived</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- FAQ Item 2 -->
+            <div class="card rounded-xl p-6 mb-4">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(2)">
+                    <h3 class="text-lg font-semibold">What makes MZXN V4 different from other executors?</h3>
+                    <i class="fas fa-chevron-down transition-transform duration-300" id="faq-icon-2"></i>
                 </div>
+                <p class="text-gray-300 mt-3 hidden" id="faq-content-2">
+                    MZXN V4 offers superior performance, more features, and better stability than most executors. Our unique injection method and optimized Lua engine provide faster execution speeds and lower resource usage.
+                </p>
             </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section id="faq" class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center slide-in-bottom">Frequently <span class="text-purple-400 glow">Asked Questions</span></h2>
             
-            <div class="executor-card rounded-xl p-8 slide-in-bottom delay-1">
-                <div class="space-y-4">
-                    <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
-                            <span>Is MZXN safe to use?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
-                        </h3>
-                        <p class="text-gray-400 mt-2 hidden">MZXN employs advanced anti-detection techniques and is regularly updated to ensure safety. However, using any exploit carries inherent risks. We recommend using an alternate account and not exploiting in games where you have valuable items.</p>
-                    </div>
-                    
-                    <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
-                            <span>Will MZXN get me banned?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
-                        </h3>
-                        <p class="text-gray-400 mt-2 hidden">While MZXN has sophisticated anti-ban systems, no exploit can guarantee 100% safety from bans. The risk depends on how you use it and in which games. Avoid obvious cheating in competitive games to minimize risk.</p>
-                    </div>
-                    
-                    <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
-                            <span>What makes MZXN better than other executors?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
-                        </h3>
-                        <p class="text-gray-400 mt-2 hidden">MZXN offers superior execution speed, more stable API hooks, better memory management, and regular updates. Our custom Lua engine provides better compatibility with complex scripts compared to standard executors.</p>
-                    </div>
-                    
-                    <div class="border-b border-gray-700 pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
-                            <span>How often is MZXN updated?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
-                        </h3>
-                        <p class="text-gray-400 mt-2 hidden">We release updates every 2-4 weeks on average, with emergency patches for critical issues within 24-48 hours. Major updates with new features come every 2-3 months.</p>
-                    </div>
-                    
-                    <div class="pb-4">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center justify-between cursor-pointer">
-                            <span>Can I request features for MZXN?</span>
-                            <i class="fas fa-chevron-down text-purple-400"></i>
-                        </h3>
-                        <p class="text-gray-400 mt-2 hidden">Yes! Join our Discord server to suggest features. Popular requests are prioritized for future updates. We've implemented over 30 community-suggested features so far.</p>
-                    </div>
+            <!-- FAQ Item 3 -->
+            <div class="card rounded-xl p-6 mb-4">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(3)">
+                    <h3 class="text-lg font-semibold">How often is MZXN V4 updated?</h3>
+                    <i class="fas fa-chevron-down transition-transform duration-300" id="faq-icon-3"></i>
                 </div>
+                <p class="text-gray-300 mt-3 hidden" id="faq-content-3">
+                    We release updates as soon as new Roblox patches are detected, typically within hours. Major feature updates are released monthly, with minor improvements and bug fixes pushed as needed.
+                </p>
             </div>
-        </section>
-    </main>
+            
+            <!-- FAQ Item 4 -->
+            <div class="card rounded-xl p-6 mb-4">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(4)">
+                    <h3 class="text-lg font-semibold">Does MZXN V4 support auto-execution?</h3>
+                    <i class="fas fa-chevron-down transition-transform duration-300" id="faq-icon-4"></i>
+                </div>
+                <p class="text-gray-300 mt-3 hidden" id="faq-content-4">
+                    Yes, MZXN V4 includes an advanced auto-execute system that can automatically run your preferred scripts when joining a game, with configurable delays and conditions.
+                </p>
+            </div>
+            
+            <!-- FAQ Item 5 -->
+            <div class="card rounded-xl p-6">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(5)">
+                    <h3 class="text-lg font-semibold">Where can I get support if I have issues?</h3>
+                    <i class="fas fa-chevron-down transition-transform duration-300" id="faq-icon-5"></i>
+                </div>
+                <p class="text-gray-300 mt-3 hidden" id="faq-content-5">
+                    Our Discord server offers 24/7 support from our team and community. Join using the Discord button above to get help with any issues or questions you may have.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="bg-gradient-to-r from-purple-900 to-gray-900 rounded-3xl p-12 text-center relative overflow-hidden">
+            <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-purple-800 opacity-20 blur-xl"></div>
+            <div class="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-purple-800 opacity-20 blur-xl"></div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Experience <span class="gradient-text glow-text">MZXN V4</span>?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Join thousands of users who have already upgraded to the most advanced Roblox executor available.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <a href="https://github.com/MZXNxd/MZXN/raw/main/Bootstrapper.rar" class="btn-primary text-white px-8 py-4 rounded-lg text-lg font-semibold flex items-center justify-center mx-auto sm:mx-0 pulse">
+                    <i class="fas fa-download mr-3"></i> Download Now
+                </a>
+                <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold flex items-center justify-center mx-auto sm:mx-0 transition-all">
+                    <i class="fab fa-discord mr-3"></i> Join Our Discord
+                </a>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-800 py-8 slide-in-bottom delay-2">
-        <div class="container mx-auto px-4">
+    <footer class="bg-black bg-opacity-50 border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center glow">
-                            <i class="fas fa-bolt text-white"></i>
-                        </div>
-                        <h1 class="text-xl font-bold">MZ<span class="text-purple-400">XN</span></h1>
-                    </div>
+                <div class="mb-6 md:mb-0">
+                    <span class="text-2xl font-bold gradient-text">MZXN <span class="text-xs bg-purple-900 text-white px-2 py-1 rounded ml-1">V4</span></span>
                     <p class="text-gray-400 mt-2">The most advanced Roblox executor</p>
                 </div>
-                
                 <div class="flex space-x-6">
-                    <a href="https://discord.gg/mW7D5cfYNt" target="_blank" class="text-gray-400 hover:text-purple-400 transition">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
                         <i class="fab fa-discord text-xl"></i>
                     </a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">
-                        <i class="fab fa-twitter text-xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">
-                        <i class="fab fa-youtube text-xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
                         <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-youtube text-xl"></i>
                     </a>
                 </div>
             </div>
-            
-            <div class="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between">
-                <div class="mb-4 md:mb-0">
-                    <p class="text-gray-400">© 2025 MZXN. All rights reserved.</p>
-                    <p class="text-gray-500 text-sm mt-1">Not affiliated with Roblox Corporation.</p>
-                </div>
-                
-                <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0">
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Refund Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Contact Us</a>
-                </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
+                <p>© 2023 MZXN Executor. All rights reserved. This product is not affiliated with Roblox Corporation.</p>
+                <p class="mt-2">By using MZXN V4, you agree to our terms of service and acknowledge the risks involved in exploiting.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Theme switcher
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const theme = btn.getAttribute('data-theme');
-                document.body.className = theme + '-mode';
-            });
-        });
-        
-        // Tab system
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabId = btn.getAttribute('data-tab');
-                
-                // Remove active class from all buttons and tabs
-                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                
-                // Add active class to clicked button and corresponding tab
-                btn.classList.add('active');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-        
-        // FAQ accordion
-        document.querySelectorAll('#faq h3').forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                const icon = question.querySelector('i');
-                
-                if (answer.classList.contains('hidden')) {
-                    answer.classList.remove('hidden');
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
-                } else {
-                    answer.classList.add('hidden');
-                    icon.classList.remove('fa-chevron-up');
-                    icon.classList.add('fa-chevron-down');
-                }
-            });
-        });
-        
-        // Initialize 3D model (simplified placeholder)
-        function init3DModel() {
-            const container = document.getElementById('executor-model');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
+        // FAQ toggle function
+        function toggleFAQ(id) {
+            const content = document.getElementById(`faq-content-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
             
-            // Create scene
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x111111);
-            
-            // Create camera
-            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-            camera.position.z = 5;
-            
-            // Create renderer
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(width, height);
-            container.innerHTML = '';
-            container.appendChild(renderer.domElement);
-            
-            // Add controls
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableZoom = false;
-            controls.enablePan = false;
-            controls.autoRotate = true;
-            controls.autoRotateSpeed = 1.5;
-            
-            // Add lights
-            const ambientLight = new THREE.AmbientLight(0x404040);
-            scene.add(ambientLight);
-            
-            const directionalLight = new THREE.DirectionalLight(0x8b5cf6, 0.8);
-            directionalLight.position.set(1, 1, 1);
-            scene.add(directionalLight);
-            
-            // Create executor model (simplified cube for demo)
-            const geometry = new THREE.BoxGeometry(2, 1, 0.2);
-            const edges = new THREE.EdgesGeometry(geometry);
-            const line = new THREE.LineSegments(
-                edges,
-                new THREE.LineBasicMaterial({ color: 0x8b5cf6 })
-            );
-            
-            const material = new THREE.MeshPhongMaterial({
-                color: 0x111111,
-                emissive: 0x111111,
-                specular: 0x8b5cf6,
-                shininess: 30,
-                transparent: true,
-                opacity: 0.9
-            });
-            
-            const cube = new THREE.Mesh(geometry, material);
-            scene.add(cube);
-            scene.add(line);
-            
-            // Add screen effect
-            const screenGeometry = new THREE.PlaneGeometry(1.8, 0.8);
-            const screenMaterial = new THREE.MeshBasicMaterial({
-                color: 0x8b5cf6,
-                emissive: 0x8b5cf6,
-                transparent: true,
-                opacity: 0.3
-            });
-            const screen = new THREE.Mesh(screenGeometry, screenMaterial);
-            screen.position.z = 0.11;
-            cube.add(screen);
-            
-            // Add MZXN logo to screen
-            const logoGeometry = new THREE.PlaneGeometry(1.5, 0.5);
-            const logoMaterial = new THREE.MeshBasicMaterial({
-                color: 0x8b5cf6,
-                transparent: true,
-                opacity: 0.8,
-                side: THREE.DoubleSide
-            });
-            const logo = new THREE.Mesh(logoGeometry, logoMaterial);
-            logo.position.z = 0.12;
-            cube.add(logo);
-            
-            // Add bolt icon
-            const boltShape = new THREE.Shape();
-            boltShape.moveTo(0, 0.5);
-            boltShape.lineTo(0.3, 0.5);
-            boltShape.lineTo(0.15, 0);
-            boltShape.lineTo(0.45, 0);
-            boltShape.lineTo(0.3, -0.5);
-            boltShape.lineTo(0, -0.5);
-            boltShape.lineTo(0.15, 0);
-            boltShape.lineTo(0, 0.5);
-            
-            const boltGeometry = new THREE.ShapeGeometry(boltShape);
-            const boltMaterial = new THREE.MeshBasicMaterial({
-                color: 0x8b5cf6,
-                side: THREE.DoubleSide
-            });
-            const bolt = new THREE.Mesh(boltGeometry, boltMaterial);
-            bolt.scale.set(0.5, 0.5, 0.5);
-            bolt.position.z = 0.13;
-            cube.add(bolt);
-            
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
             }
-            
-            animate();
-            
-            // Handle resize
-            window.addEventListener('resize', () => {
-                const width = container.clientWidth;
-                const height = container.clientHeight;
-                
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-                
-                renderer.setSize(width, height);
-            });
         }
-        
-        // Initialize when page loads
-        window.addEventListener('load', () => {
-            init3DModel();
-            
-            // Simulate loading delay for 3D model
-            setTimeout(() => {
-                document.getElementById('executor-model').style.background = 'transparent';
-            }, 500);
 
-            // Add animation classes to elements as they come into view
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animated');
+        // Terminal typing effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalTexts = [
+                "MZXN V4 > Initializing...",
+                "> Loading dependencies...",
+                "> Checking environment...",
+                "> Injecting into Roblox...",
+                "> Establishing secure connection...",
+                "Welcome to MZXN V4 Executor",
+                "Type 'help' for commands list"
+            ];
+            
+            const terminal = document.querySelector('.terminal');
+            if (terminal) {
+                terminal.innerHTML = '';
+                
+                terminalTexts.forEach((text, index) => {
+                    const line = document.createElement('div');
+                    let colorClass = 'text-white';
+                    
+                    if (index === 0) colorClass = 'text-green-400';
+                    else if (index < 5) {
+                        const colors = ['text-purple-400', 'text-yellow-400', 'text-green-400', 'text-blue-400'];
+                        colorClass = colors[index - 1];
+                    } else if (index === 5) {
+                        text = text.replace('MZXN V4', '<span class="text-purple-400">MZXN V4</span>');
+                    } else if (index === 6) {
+                        colorClass = 'text-gray-400';
+                    }
+                    
+                    line.className = `${colorClass} mb-2`;
+                    line.innerHTML = text;
+                    terminal.appendChild(line);
+                    
+                    // Add typing effect to the first line
+                    if (index === 0) {
+                        line.classList.add('typing');
+                        setTimeout(() => {
+                            line.classList.remove('typing');
+                        }, 1000);
                     }
                 });
-            }, {
-                threshold: 0.1
-            });
-
-            document.querySelectorAll('.slide-in-left, .slide-in-right, .slide-in-bottom').forEach(el => {
-                observer.observe(el);
-            });
-        });
-        
-        // Download buttons
-        document.querySelectorAll('.download-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Add to download stats animation
-                const stats = document.querySelector('.stat-card:first-child div:first-child');
-                let current = parseInt(stats.textContent.replace(/\D/g, ''));
-                const target = current + 1;
                 
-                const interval = setInterval(() => {
-                    current += Math.ceil((target - current) / 10);
-                    stats.textContent = current.toLocaleString() + '+';
-                    
-                    if (current >= target) {
-                        clearInterval(interval);
-                        stats.textContent = target.toLocaleString() + '+';
-                    }
-                }, 30);
-            });
-        });
-        
-        // Tooltips
-        document.querySelectorAll('.tooltip').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                const tooltip = el.querySelector('.tooltip-text');
-                tooltip.style.visibility = 'visible';
-                tooltip.style.opacity = '1';
-            });
+                // Add terminal controls
+                const controls = document.createElement('div');
+                controls.className = 'absolute bottom-4 left-4 flex items-center';
+                controls.innerHTML = `
+                    <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                `;
+                terminal.appendChild(controls);
+                
+                const version = document.createElement('div');
+                version.className = 'absolute bottom-4 right-4 text-gray-500 text-sm';
+                version.textContent = 'v4.0.0';
+                terminal.appendChild(version);
+            }
             
-            el.addEventListener('mouseleave', () => {
-                const tooltip = el.querySelector('.tooltip-text');
-                tooltip.style.visibility = 'hidden';
-                tooltip.style.opacity = '0';
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
         });
     </script>
